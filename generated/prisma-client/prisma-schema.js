@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregateUrl {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -14,6 +18,12 @@ type BatchPayload {
 scalar Long
 
 type Mutation {
+  createUrl(data: UrlCreateInput!): Url!
+  updateUrl(data: UrlUpdateInput!, where: UrlWhereUniqueInput!): Url
+  updateManyUrls(data: UrlUpdateManyMutationInput!, where: UrlWhereInput): BatchPayload!
+  upsertUrl(where: UrlWhereUniqueInput!, create: UrlCreateInput!, update: UrlUpdateInput!): Url!
+  deleteUrl(where: UrlWhereUniqueInput!): Url
+  deleteManyUrls(where: UrlWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -40,6 +50,9 @@ type PageInfo {
 }
 
 type Query {
+  url(where: UrlWhereUniqueInput!): Url
+  urls(where: UrlWhereInput, orderBy: UrlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Url]!
+  urlsConnection(where: UrlWhereInput, orderBy: UrlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UrlConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,7 +60,126 @@ type Query {
 }
 
 type Subscription {
+  url(where: UrlSubscriptionWhereInput): UrlSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Url {
+  id: ID!
+  oldurl: String!
+  newurl: String!
+}
+
+type UrlConnection {
+  pageInfo: PageInfo!
+  edges: [UrlEdge]!
+  aggregate: AggregateUrl!
+}
+
+input UrlCreateInput {
+  id: ID
+  oldurl: String!
+  newurl: String!
+}
+
+type UrlEdge {
+  node: Url!
+  cursor: String!
+}
+
+enum UrlOrderByInput {
+  id_ASC
+  id_DESC
+  oldurl_ASC
+  oldurl_DESC
+  newurl_ASC
+  newurl_DESC
+}
+
+type UrlPreviousValues {
+  id: ID!
+  oldurl: String!
+  newurl: String!
+}
+
+type UrlSubscriptionPayload {
+  mutation: MutationType!
+  node: Url
+  updatedFields: [String!]
+  previousValues: UrlPreviousValues
+}
+
+input UrlSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UrlWhereInput
+  AND: [UrlSubscriptionWhereInput!]
+  OR: [UrlSubscriptionWhereInput!]
+  NOT: [UrlSubscriptionWhereInput!]
+}
+
+input UrlUpdateInput {
+  oldurl: String
+  newurl: String
+}
+
+input UrlUpdateManyMutationInput {
+  oldurl: String
+  newurl: String
+}
+
+input UrlWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  oldurl: String
+  oldurl_not: String
+  oldurl_in: [String!]
+  oldurl_not_in: [String!]
+  oldurl_lt: String
+  oldurl_lte: String
+  oldurl_gt: String
+  oldurl_gte: String
+  oldurl_contains: String
+  oldurl_not_contains: String
+  oldurl_starts_with: String
+  oldurl_not_starts_with: String
+  oldurl_ends_with: String
+  oldurl_not_ends_with: String
+  newurl: String
+  newurl_not: String
+  newurl_in: [String!]
+  newurl_not_in: [String!]
+  newurl_lt: String
+  newurl_lte: String
+  newurl_gt: String
+  newurl_gte: String
+  newurl_contains: String
+  newurl_not_contains: String
+  newurl_starts_with: String
+  newurl_not_starts_with: String
+  newurl_ends_with: String
+  newurl_not_ends_with: String
+  AND: [UrlWhereInput!]
+  OR: [UrlWhereInput!]
+  NOT: [UrlWhereInput!]
+}
+
+input UrlWhereUniqueInput {
+  id: ID
 }
 
 type User {

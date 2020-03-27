@@ -1,0 +1,13 @@
+
+type Mutation {
+  urlShortner(url: UrlInput): UrlResponse!
+}
+
+input UrlInput {
+url: String!
+}
+
+type UrlResponse {
+  oldurl: String!
+  newurl: String!
+}

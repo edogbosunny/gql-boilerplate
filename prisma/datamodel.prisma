@@ -2,3 +2,9 @@ type User {
   id: ID! @id
   name: String!
 }
+
+type Url {
+  id: ID! @id
+  oldurl: String!
+  newurl: String!
+}
